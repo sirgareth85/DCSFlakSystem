@@ -1,5 +1,5 @@
 
--- FlakSystem.lua VERSION 1.0
+-- FlakSystem.lua VERSION 1.1.0
 -- Modular flak + corridor library for DCS World
 -- Requires MIST
 -- Supports:
@@ -18,6 +18,12 @@ FlakSystem.__index = FlakSystem
 --------------------------------------------------
 
 FlakSystem.debug = false  -- set true for in-game messages
+
+-- Hold Fire Flag
+-- Add a flag name for the option to trigger on and off the entire system.
+-- "nil" is the default option; The flag will be unset and thus ignored.
+
+FlakSystem.holdFireFlag = nil  -- Set to flag name string, e.g. "HoldFire"
 
 -- 🧮 Density settings
 -- Controls how many flak bursts are generated per layer per zone
@@ -163,6 +169,9 @@ function FlakSystem:spawnFlak()
         for i = 1, count do
             mist.scheduleFunction(function()
                 if not self.enabled then return end
+                if FlakSystem.holdFireFlag and trigger.misc.getUserFlag(FlakSystem.holdFireFlag) == 1 then
+                    return  -- Hold fire active
+                end
 
                 local angle = math.random() * 2 * math.pi
                 local dist = math.random() * radius

@@ -80,6 +80,52 @@ Optional:
 
 ---
 
+## 🔘 Global Hold Fire Control (v1.1.0+)
+
+You can now define a **single global "Hold Fire" flag** to suppress all flak barrages system-wide.
+
+### ✅ How It Works
+
+If the `holdFireFlag` is set and its flag value is `1`, the system will **suppress all flak explosions** — even if enemy aircraft are present and a zone is otherwise active.
+
+Flak zones will continue to **evaluate conditions and update state**, but no visual/sound effects will be generated until the flag is cleared.
+
+---
+
+### 🔧 Setup
+
+Set the flag name in your script:
+
+```lua
+FlakSystem.holdFireFlag = "HoldFire" -- Matches a flag name or number in ME
+```
+
+In the Mission Editor:
+
+* Use triggers to **set Flag = 1** → Flak goes silent
+* Set **Flag = 0** → Flak resumes as normal (if zones are active)
+
+---
+
+### 🔁 Use Cases
+
+* Temporarily hold fire during scripted **bombing runs**
+* Allow player-triggered **ceasefire** or **flak negotiation**
+* Dynamically **suppress air defenses** as a reward or reaction
+
+---
+
+### 🔍 Debug Tip
+
+If `FlakSystem.debug = true`, a log message will appear when flak is suppressed:
+
+```
+[Flak] Hold fire active — suppressing flak
+```
+
+---
+
+
 ## Manual Flak Zone Creation
 
 For precise control or scripted generation, you can manually create each flak zone using `FlakSystem:newZone()`.
